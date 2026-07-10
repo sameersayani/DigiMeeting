@@ -1,0 +1,63 @@
+@baseUrl = http://localhost:5209/api/booking
+
+### 1. View Initial Seeding Data Check (Optional - Test Route Availability)
+GET {{baseUrl}}/dashboard
+Content-Type: application/json
+
+###
+
+### 2. Successfully Book a Room (Alpha Developers [Size 10] into Grand Boardroom [Capacity 12])
+POST {{baseUrl}}/book
+Content-Type: application/json
+
+{
+  "teamId": 1,
+  "roomId": 1,
+  "startTime": "2026-07-15T10:00:00Z",
+  "endTime": "2026-07-15T11:00:00Z"
+}
+
+###
+
+### 3. Test Failure: Overlap Check (Try booking the same room during the exact same time window)
+POST {{baseUrl}}/book
+Content-Type: application/json
+
+{
+  "teamId": 3,
+  "roomId": 1,
+  "startTime": "2026-07-15T10:30:00Z",
+  "endTime": "2026-07-15T11:30:00Z"
+}
+
+###
+
+### 4. Test Failure: Capacity Filter (Try fitting Alpha Devs [Size 10] into Focus Room [Capacity 6])
+POST {{baseUrl}}/book
+Content-Type: application/json
+
+{
+  "teamId": 1,
+  "roomId": 7,
+  "startTime": "2026-07-15T14:00:00Z",
+  "endTime": "2026-07-15T15:00:00Z"
+}
+
+###
+
+### 5. Join the Waitlist (Gamma DevOps Team [Size 8] requests the full 10:00 to 11:00 slot)
+POST {{baseUrl}}/waitlist
+Content-Type: application/json
+
+{
+  "teamId": 2,
+  "targetStartTime": "2026-07-15T10:00:00Z",
+  "targetEndTime": "2026-07-15T11:00:00Z"
+}
+
+###
+
+### 6. Cancel the First Booking (This should instantly auto-allocate the waitlisted team)
+# NOTE: Replace '1' with the exact booking ID returned from Step 2 if it differs.
+POST {{baseUrl}}/cancel/1
+Content-Type: application/json
