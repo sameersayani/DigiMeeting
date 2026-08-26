@@ -4,18 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DigiMeeting.API.Data;
 
-public class WaitlistRepository : IWaitlistRepository
+public class WaitlistRepository : BaseRepository<WaitingList>, IWaitlistRepository
 {
     private readonly SchedulerDbContext _context;
 
-    public WaitlistRepository(SchedulerDbContext context)
+    public WaitlistRepository(SchedulerDbContext context): base(context)
     {
         _context = context;
-    }
-
-    public async Task AddAsync(WaitingList waitingList)
-    {
-        await _context.Waitlists.AddAsync(waitingList);
     }
 
     public async Task<WaitingList?> GetNextTeamForSlotAsync(int capacity, DateTime start, DateTime end)

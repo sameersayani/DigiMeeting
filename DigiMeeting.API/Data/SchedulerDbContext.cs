@@ -8,6 +8,7 @@ public class SchedulerDbContext : DbContext
     public SchedulerDbContext(DbContextOptions<SchedulerDbContext> options) : base(options) { }
 
     public DbSet<Team> Teams { get; set; }
+    public DbSet<User> Users { get; set; }
     public DbSet<MeetingRoom> Rooms { get; set; }
     public DbSet<Booking> Bookings { get; set; }
     public DbSet<WaitingList> Waitlists { get; set; }
@@ -20,13 +21,13 @@ public class SchedulerDbContext : DbContext
         
         // Seed initial data for your 7 rooms (4 large, 3 small)
         modelBuilder.Entity<MeetingRoom>().HasData(
-            new MeetingRoom { Id = 1, Name = "Grand Boardroom", Capacity = 12 },
-            new MeetingRoom { Id = 2, Name = "Oceanic Suite", Capacity = 12 },
-            new MeetingRoom { Id = 3, Name = "Skyline Hall", Capacity = 15 },
-            new MeetingRoom { Id = 4, Name = "The Hive", Capacity = 20 },
-            new MeetingRoom { Id = 5, Name = "Huddle Pod A", Capacity = 6 },
-            new MeetingRoom { Id = 6, Name = "Huddle Pod B", Capacity = 6 },
-            new MeetingRoom { Id = 7, Name = "Focus Room", Capacity = 6 }
+            new MeetingRoom { Id = 1, Agenda = "Grand Boardroom", Capacity = 12 },
+            new MeetingRoom { Id = 2, Agenda = "Oceanic Suite", Capacity = 12 },
+            new MeetingRoom { Id = 3, Agenda = "Skyline Hall", Capacity = 15 },
+            new MeetingRoom { Id = 4, Agenda = "The Hive", Capacity = 20 },
+            new MeetingRoom { Id = 5, Agenda = "Huddle Pod A", Capacity = 6 },
+            new MeetingRoom { Id = 6, Agenda = "Huddle Pod B", Capacity = 6 },
+            new MeetingRoom { Id = 7, Agenda = "Focus Room", Capacity = 6 }
         );
     }
 }

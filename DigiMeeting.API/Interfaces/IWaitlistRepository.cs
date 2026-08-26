@@ -2,8 +2,7 @@ using DigiMeeting.API.Models;
 
 namespace DigiMeeting.API.Interfaces;
 
-public interface IWaitlistRepository
+public interface IWaitlistRepository: IBaseRepository<WaitingList>
 {
-    Task AddAsync(WaitingList waitingList);
     Task<WaitingList?> GetNextTeamForSlotAsync(int capacity, DateTime start, DateTime end);
 }
