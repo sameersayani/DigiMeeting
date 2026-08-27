@@ -45,7 +45,7 @@ public class BookingController : ControllerBase
         var team = new Team
         {
             Name = request.Name,
-            Email = request.Email,
+            Email = distinctEmails,
             MemberCount = distinctEmails.Count,
             CreatedBy = "test"
         };
@@ -202,8 +202,8 @@ public class BookingController : ControllerBase
     }
 
     team.Name = request.Name;
-    team.Email = request.Email;
     var distinctEmails = request.Email.Distinct().ToList();
+    team.Email = distinctEmails;
     team.MemberCount = distinctEmails.Count();
     
     await _unitOfWork.Teams.UpdateAsync(team);
