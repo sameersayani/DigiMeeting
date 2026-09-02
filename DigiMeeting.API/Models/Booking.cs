@@ -3,6 +3,7 @@ namespace DigiMeeting.API.Models;
 public class Booking
 {
     public int Id { get; set; }
+    public string? Agenda { get; set; } 
     public int TeamId { get; set; }
     public int RoomId { get; set; }
     public DateTime StartTime { get; set; }

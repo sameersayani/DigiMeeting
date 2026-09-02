@@ -13,6 +13,7 @@ public class WaitlistRepository : BaseRepository<WaitingList>, IWaitlistReposito
         _context = context;
     }
 
+ 
     public async Task<WaitingList?> GetNextTeamForSlotAsync(int capacity, DateTime start, DateTime end)
     {
         return await _context.Waitlists
@@ -23,5 +24,21 @@ public class WaitlistRepository : BaseRepository<WaitingList>, IWaitlistReposito
             .OrderBy(w => w.CreatedAt)
             .Include(w => w.Team)
             .FirstOrDefaultAsync();
+    }
+
+    public Task<int> JoinWaitlist(int teamId, int requiredCapacity, 
+    DateTime targetStartTime, DateTime targetEndTime)
+    {
+        var waitlistEntry = new WaitingList
+        {
+            TeamId = teamId,
+            RequiredCapacity = requiredCapacity,
+            TargetStartTime = targetStartTime,
+            TargetEndTime = targetEndTime,
+            Status = "Active"
+        };
+
+        _context.Waitlists.Add(waitlistEntry);
+        return _context.SaveChangesAsync();
     }
 }

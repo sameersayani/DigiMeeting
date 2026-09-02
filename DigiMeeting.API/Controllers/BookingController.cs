@@ -27,7 +27,7 @@ public class BookingController : ControllerBase
     {
         var room = new MeetingRoom
         {
-            Agenda = request.Name,
+            Name = request.Name,
             Capacity = request.Capacity,
             CreatedBy = "test"
         };
@@ -162,7 +162,7 @@ public class BookingController : ControllerBase
                 var notification = new NotificationQueue
                 {
                     RecipientTeamName = nextInLine.Team?.Name ?? $"Team {nextInLine.TeamId}",
-                    Message = $"Great news! You have been auto-allocated into {booking.Room.Agenda} from {booking.StartTime} to {booking.EndTime}."
+                    Message = $"Great news! You have been auto-allocated into {booking.Room.Name} from {booking.StartTime} to {booking.EndTime}."
                 };
                 await _context.NotificationQueues.AddAsync(notification);
             }
@@ -183,7 +183,7 @@ public class BookingController : ControllerBase
         return NotFound($"Room with ID {id} not found.");
     }
 
-    room.Agenda = request.Name;
+    room.Name = request.Name;
     room.Capacity = request.Capacity;
 
     await _unitOfWork.Rooms.UpdateAsync(room);
@@ -293,7 +293,7 @@ public class BookingController : ControllerBase
             .Select(b => new {
                 b.Id,
                 RoomId = b.RoomId,
-                RoomName = b.Room != null ? b.Room.Agenda : "Unknown Room",
+                RoomName = b.Room != null ? b.Room.Name : "Unknown Room",
                 TeamId = b.TeamId,
                 TeamName = b.Team != null ? b.Team.Name : "Unknown Team",
                 b.StartTime,
@@ -305,5 +305,14 @@ public class BookingController : ControllerBase
         var teams = await _context.Teams.ToListAsync();
 
         return Ok(new { Bookings = activeBookings, Rooms = rooms, Teams = teams });
+    }
+
+    [HttpGet("roomsandteams")]
+    public async Task<IActionResult> GetRoomsAndTeams()
+    {
+        var rooms = await _context.Rooms.ToListAsync();
+        var teams = await _context.Teams.ToListAsync();
+
+        return Ok(new { Rooms = rooms, Teams = teams });
     }
 }

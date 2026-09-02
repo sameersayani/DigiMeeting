@@ -38,6 +38,8 @@ builder.Services.AddDbContext<SchedulerDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddScoped<IWaitlistRepository, WaitlistRepository>();
 
 builder.Services.AddCors(options =>
 {
